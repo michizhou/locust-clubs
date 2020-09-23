@@ -22,13 +22,6 @@ def load_data():
         db.session.add(new_club)
       db.session.commit()
 
-    tags = db.session.query(Tag).all()
-    print(tags)
-    for tag in tags:
-      print(tag.club)
-      # print (tag.username, tag.club, tag.email, tag.student_type, tag.class_year)
-
-
 # No need to modify the below code.
 if __name__ == '__main__':
     # Delete any existing database before bootstrapping a new one.
