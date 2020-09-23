@@ -1,13 +1,32 @@
 import os
+import json
 from app import db, DB_FILE
+from models import *
 
 def create_user():
-    print("TODO: Create a user called josh")
+    new_user = User(username='josh', first='Josh', last='Bergmann',
+                    email='jberg@seas.upenn.edu', student_type='Undergraduate',
+                    class_year=2024, major='Computer Science', sub_school='SEAS')
+    db.session.add(new_user)
+    db.session.commit()
 
 def load_data():
-    from models import *
-    print("TODO: Load in clubs.json to the database.")
+    with open('clubs.json') as data_file:
+      data = json.load(data_file)
+      for entry in data:
+        new_club = Club(code=entry['code'], name=entry['name'],
+                        description=entry['description'])
+        for tag in entry['tags']:
+          t = Tag(tag_name=tag)
+          new_club.tags.append(t)
+        db.session.add(new_club)
+      db.session.commit()
 
+    tags = db.session.query(Tag).all()
+    print(tags)
+    for tag in tags:
+      print(tag.club)
+      # print (tag.username, tag.club, tag.email, tag.student_type, tag.class_year)
 
 
 # No need to modify the below code.
